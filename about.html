@@ -16,7 +16,10 @@
     .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{padding:28px;background:linear-gradient(135deg,#223e2dcc,#132d20dd);border:1px solid var(--line);border-radius:6px}.card p:last-child{margin-bottom:0}.number{display:block;font-size:11px;color:var(--accent);letter-spacing:2px;margin-bottom:16px}.wide{grid-column:1/-1}.modes{display:grid;grid-template-columns:1fr 1fr;gap:30px}.save{margin-top:18px;border-left:3px solid var(--accent)}.cta{margin:40px 0 56px;padding:30px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:25px}.cta p{margin:0;max-width:640px}.play{white-space:nowrap;background:var(--accent);color:#17291b;border-radius:4px;padding:13px 23px;text-decoration:none;font-weight:700}.play:hover{background:#eee0ad}footer{padding:22px 0 35px;border-top:1px solid var(--line);font-size:12px;color:#93aa8e}
     @media(max-width:640px){.wrap{width:calc(100% - 28px)}header{padding:18px 0;gap:12px}.brand{font-size:11px;letter-spacing:2px}.back{font-size:12px;padding:8px 11px}.hero{padding:40px 0 30px}.lead{font-size:17px}.grid,.modes{grid-template-columns:1fr}.card{padding:23px 20px}.wide{grid-column:auto}h2{font-size:23px}.cta{align-items:flex-start;flex-direction:column;margin:28px 0 35px}body{font-size:15px}}
     @media(prefers-reduced-motion:no-preference){a{transition:background .15s}}
-  </style>
+  
+.site-links{display:flex;flex-wrap:wrap;gap:8px 20px;padding:16px 0;font-size:13px}.site-links a{display:inline-flex;align-items:center;min-height:44px;overflow-wrap:anywhere}.document{max-width:820px;margin:42px auto 56px}.document h1{font-size:clamp(30px,6vw,48px);overflow-wrap:anywhere}.document h2{margin-top:34px;font-size:23px}.document ul,.document ol{padding-left:22px;color:var(--muted)}.document li{margin-bottom:10px}.document a{overflow-wrap:anywhere}.document .email{display:inline-block;font-size:clamp(17px,4.5vw,23px);margin:6px 0 20px}.document .notice{padding:18px 22px;border-left:3px solid var(--accent);background:#203c2a;margin:24px 0;color:var(--muted)}.document .meta{font-size:13px;color:#9eb493}.document .card{margin:24px 0}.document .play{display:inline-block;white-space:normal}.document pre{font:inherit;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--muted);margin:0}.site-links a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}@media(max-width:640px){.document{margin:28px auto 38px}.site-links{gap:4px 16px;font-size:12px}.document .notice{padding:15px}}
+
+</style>
 </head>
 <body>
   <div class="wrap">
@@ -40,7 +43,7 @@
       <section class="card save"><h2>Игра в браузере</h2><p>Dead Zone рассчитана на запуск на компьютерах и мобильных устройствах. Интерфейс адаптируется к размеру экрана, а на телефонах поддерживаются вертикальная и горизонтальная ориентации.</p></section>
       <div class="cta"><p>Выбирай свой путь, обустраивай базу и раскрывай тайны зоны — шаг за шагом, вылазка за вылазкой.</p><a class="play" href="./index.html">К игре →</a></div>
     </main>
-    <footer>DEAD ZONE · NV-7 / Об игре</footer>
+    <footer>DEAD ZONE · NV-7<nav class="site-links" aria-label="Информация о сайте"><a href="./about.html">Об игре</a><a href="./privacy.html">Конфиденциальность</a><a href="./contact.html">Обратная связь</a></nav></footer>
   </div>
 </body>
 </html>
