@@ -81,6 +81,18 @@ body[data-touch=true] #modal{padding:calc(var(--safe-top) + 7px) calc(var(--safe
  body[data-touch=true] #touch-construction{bottom:calc(var(--safe-bottom) + 236px);width:min(300px,calc(100vw - 24px))}
  body[data-touch=true] #buildhint{bottom:calc(var(--safe-bottom) + 278px)}
 }
+
+/* Manual AdSense placement: part of the main menu, never a game overlay. */
+#overlay .main-menu{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);max-height:94vh;max-height:94dvh}
+.main-menu>section{min-width:0}
+#menu-ad{grid-column:1/-1;margin:0;padding:28px clamp(12px,3vw,34px);border-top:1px solid #91a37644;background:#10271d;touch-action:pan-y}
+#menu-ad .ad-label{display:block;text-align:center;font-size:10px;letter-spacing:1px;color:#a8bc9f;margin-bottom:12px}
+#menu-ad .ad-space{width:100%;min-height:100px}
+#menu-ad .ad-note{margin:0;text-align:center;padding:24px 10px;color:#9fb49b;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+body[data-play=true] #menu-ad{display:none!important}
+@media(max-width:800px){#overlay .main-menu{grid-template-columns:minmax(0,1fr)}#menu-ad{padding:26px 12px}.main-menu .menu-top{flex-wrap:wrap}.main-menu .mode-card>span{min-width:0}.main-menu .menu-hero h1{font-size:clamp(28px,9vw,40px);overflow-wrap:anywhere}}
+@media(max-height:500px){#overlay .main-menu{max-height:90vh;max-height:90dvh}}
+
 </style></head><body>
 <canvas id="c" aria-label="Игровой мир"></canvas>
 <div class="left-panels"><section id="hud" class="glass"><small>Зона отчуждения / 04</small><h1>МЁРТВАЯ ЗОНА</h1><div id="zone"></div><div class="bar xp"><i id="xp"></i></div><div id="healthtext"></div><div class="bar"><i id="health"></i></div><div id="needs"><div><span id="hungerlabel"></span><div class="bar"><i id="hungerbar"></i></div></div><div><span id="thirstlabel"></span><div class="bar"><i id="thirstbar"></i></div></div></div><div id="stats"></div></section><section id="quest" class="glass"><small id="questcategory">J · Сюжет и задания</small><h3 id="questtitle"></h3><p id="questtext"></p><button id="journalbutton" onclick="openModal('journal')">Открыть журнал →</button></section></div>
@@ -1059,8 +1071,51 @@ function selectMode(mode){if(!['story','sandbox'].includes(mode))return;if(start
 function beginAdventure(){started=true;paused=false;$('#overlay').style.display='none';if(p.hp<=0){die();localizeUI();return}toast(tr('currentGoal')+adventureObjective().text);save();updateHUD()}
 function returnToMenu(){save();started=false;paused=false;modalTab=null;blueprint=null;clearInput();$('#modal').classList.remove('open');savedState='loaded';$('#overlay').style.display='grid';renderMainMenu();updateHUD()}
 function resetCurrentMode(){if(savedState&&!confirm(tr('resetModeConfirm')))return;fresh();savedState=null;beginAdventure()}
+
+// Paste ONLY the numeric data-ad-slot from your AdSense display ad unit here.
+// Publisher ID alone cannot identify a display ad unit. Keep Auto ads OFF.
+const MENU_AD_SLOT = '';
+let menuAdElement = null;
+let menuAdRequested = false;
+function mountMenuAd(){
+  const menu = document.querySelector('#overlay .main-menu');
+  if(!menu || started || over) return;
+  if(!menuAdElement){
+    menuAdElement = document.createElement('section');
+    menuAdElement.id = 'menu-ad';
+    menuAdElement.setAttribute('aria-label','Реклама / Advertisement');
+    menuAdElement.innerHTML = '<span class="ad-label">Реклама · Advertisement</span><div class="ad-space"></div>';
+    const space = menuAdElement.querySelector('.ad-space');
+    if(/^\d+$/.test(MENU_AD_SLOT)){
+      const ad = document.createElement('ins');
+      ad.className = 'adsbygoogle';
+      ad.style.display = 'block';
+      ad.dataset.adClient = 'ca-pub-2811181615453444';
+      ad.dataset.adSlot = MENU_AD_SLOT;
+      ad.dataset.adFormat = 'horizontal';
+      ad.dataset.fullWidthResponsive = 'true';
+      space.appendChild(ad);
+    }else{
+      space.innerHTML = '<p class="ad-note">Место для рекламы · Ad space</p>';
+    }
+  }
+  menu.appendChild(menuAdElement);
+  // Reuse this exact element across mode/language changes and menu returns.
+  // No timer, automatic refresh, or request for a hidden/zero-width placement.
+  requestAnimationFrame(()=>{
+    if(menuAdRequested || !/^\d+$/.test(MENU_AD_SLOT) || started || over ||
+       !menuAdElement.isConnected || !menuAdElement.getClientRects().length ||
+       menuAdElement.getBoundingClientRect().width <= 0) return;
+    menuAdRequested = true;
+    try{(window.adsbygoogle = window.adsbygoogle || []).push({});}
+    catch(error){console.warn('Menu ad unavailable:',error);}
+  });
+}
+
 function renderMainMenu(){
+  if(menuAdElement) menuAdElement.remove();
   $('#overlay').innerHTML='<div class="main-menu"><section class="menu-hero"><span class="eyebrow">NV-7 / '+tr('survivalRPG')+'</span><h1>'+tr('gameTitle')+'</h1><p class="hero-lead">'+tr('heroText')+'</p><div class="hero-tags"><span>06 '+tr('regions')+'</span><span>◈ '+tr('armor')+'</span><span>⌂ '+tr('base')+'</span></div><div class="hero-art">'+menuScenerySVG()+'</div><small class="hero-caption">'+tr('heroCaption')+'</small></section><section class="mode-panel"><div class="menu-top"><span class="eyebrow">'+tr('chooseMode')+'</span>'+languageSelectHTML('language-select')+'</div><button class="mode-card '+(gameMode==='story'?'selected':'')+'" id="mode-story" aria-pressed="'+(gameMode==='story')+'"><span class="mode-number">01</span><span><strong>'+tr('story')+'</strong><small>'+tr('storyDescription')+'</small></span><span class="mode-arrow">↗</span></button><button class="mode-card '+(gameMode==='sandbox'?'selected':'')+'" id="mode-sandbox" aria-pressed="'+(gameMode==='sandbox')+'"><span class="mode-number">02</span><span><strong>'+tr('sandbox')+'</strong><small>'+tr('sandboxDescription')+'</small></span><span class="mode-arrow">↗</span></button><p id="saveinfo" class="summary">'+(savedState?tr('saveReady')+' · '+tr('level')+' '+p.level+' · '+tr('day')+' '+(Math.floor(clock/CYCLE)+1):tr('newWorld'))+'</p><button class="primary start-adventure" id="start">'+tr(savedState?'continue':'start')+' →</button>'+(savedState?'<button class="reset-world" id="newgame">'+tr('newModeWorld')+'</button>':'')+'<p class="menu-save-note">'+tr('separateSaves')+'</p><div class="menu-controls">WASD · '+tr('move')+' &nbsp; I · '+tr('bag')+'<br>K · '+tr('armor')+' &nbsp; O · '+tr('settings')+'</div></section></div>';
+  mountMenuAd();
   $('#mode-story').onclick=()=>selectMode('story');$('#mode-sandbox').onclick=()=>selectMode('sandbox');$('#language-select').onchange=e=>setLanguage(e.target.value);$('#start').onclick=beginAdventure;if(savedState)$('#newgame').onclick=resetCurrentMode;localizeUI();
 }
 function initAdventureUI(){
