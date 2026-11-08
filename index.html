@@ -48,6 +48,38 @@ body[data-touch=true] #modal{padding:calc(var(--safe-top) + 7px) calc(var(--safe
 @media(orientation:portrait){body[data-touch=true] #topcenter{top:calc(var(--safe-top) + 130px)}body[data-touch=true] #touch-objective{top:calc(var(--safe-top) + 177px)}}
 @media(orientation:landscape) and (max-height:620px) and (max-width:760px){body[data-touch=true] #hotbar{width:300px;bottom:calc(var(--safe-bottom) + 65px)}body[data-touch=true] #touch-construction{bottom:calc(var(--safe-bottom) + 123px);width:300px}body[data-touch=true] #workstatus{bottom:calc(var(--safe-bottom) + 124px);width:300px}body[data-touch=true] #prompt:not(:empty){bottom:calc(var(--safe-bottom) + 127px)}body[data-touch=true][data-building=true] #prompt{display:none}body[data-touch=true][data-building=true] #workstatus{bottom:calc(var(--safe-bottom) + 182px)}}
 #touch-controls{-webkit-touch-callout:none}
+
+/* Dead Zone: compact portrait mobile HUD, v2 */
+@media (orientation:portrait) and (pointer:coarse) {
+ body[data-touch=true] .left-panels{top:calc(var(--safe-top) + 5px);left:calc(var(--safe-left) + 6px);width:118px}
+ body[data-touch=true] #hud{padding:6px 7px}
+ body[data-touch=true] #zone{font-size:9px;margin-bottom:4px}
+ body[data-touch=true] #healthtext{font-size:9px}
+ body[data-touch=true] #needs{font-size:7px;gap:4px;margin-top:5px}
+ body[data-touch=true] #weapon{top:calc(var(--safe-top) + 5px);right:calc(var(--safe-right) + 6px);width:118px;padding:6px 7px}
+ body[data-touch=true] #weaponname{font-size:11px;margin:3px 0}
+ body[data-touch=true] #ammo{font-size:20px}
+ body[data-touch=true] #weaponinfo{font-size:7px}
+ body[data-touch=true] #rarity{font-size:6px}
+ body[data-touch=true] #topcenter{top:calc(var(--safe-top) + 89px);width:200px}
+ body[data-touch=true] #cyclepanel{min-height:29px;padding:3px 6px}
+ body[data-touch=true] #touch-objective{top:calc(var(--safe-top) + 125px);width:min(280px,calc(100vw - 40px));height:27px!important;min-height:27px!important;padding:5px 8px!important;font-size:9px}
+ body[data-touch=true] .touch-toolbar{bottom:calc(var(--safe-bottom) + 194px);width:min(300px,calc(100vw - 24px));gap:3px}
+ body[data-touch=true] .touch-toolbar button{min-height:36px!important;padding:3px 1px!important;font-size:9px!important}
+ body[data-touch=true] .touch-toolbar button small{font-size:7px}
+ body[data-touch=true] #hotbar{bottom:calc(var(--safe-bottom) + 148px);width:min(302px,calc(100vw - 24px));padding:3px;gap:3px}
+ body[data-touch=true] #hotbar button{height:39px;padding:3px}
+ body[data-touch=true] #hotbar .slot-art{width:23px;height:18px;top:1px;left:calc(50% - 10px)}
+ body[data-touch=true] #hotbar .slotname{font-size:6px;margin-top:18px}
+ body[data-touch=true] #hotbar .slotkey{font-size:7px}
+ body[data-touch=true] .touch-primary,body[data-touch=true] .touch-needs{bottom:calc(var(--safe-bottom) + 92px);gap:4px}
+ body[data-touch=true] .touch-primary button,body[data-touch=true] .touch-needs button{width:43px;min-width:43px;height:46px;min-height:46px;padding:3px!important;font-size:9px}
+ body[data-touch=true] .touch-stick{width:94px;height:94px;bottom:calc(var(--safe-bottom) + 5px)}
+ body[data-touch=true] #prompt:not(:empty){bottom:calc(var(--safe-bottom) + 242px);font-size:9px}
+ body[data-touch=true] #toast:not(:empty){top:calc(var(--safe-top) + 165px);font-size:9px;padding:5px 8px}
+ body[data-touch=true] #touch-construction{bottom:calc(var(--safe-bottom) + 236px);width:min(300px,calc(100vw - 24px))}
+ body[data-touch=true] #buildhint{bottom:calc(var(--safe-bottom) + 278px)}
+}
 </style></head><body>
 <canvas id="c" aria-label="Игровой мир"></canvas>
 <div class="left-panels"><section id="hud" class="glass"><small>Зона отчуждения / 04</small><h1>МЁРТВАЯ ЗОНА</h1><div id="zone"></div><div class="bar xp"><i id="xp"></i></div><div id="healthtext"></div><div class="bar"><i id="health"></i></div><div id="needs"><div><span id="hungerlabel"></span><div class="bar"><i id="hungerbar"></i></div></div><div><span id="thirstlabel"></span><div class="bar"><i id="thirstbar"></i></div></div></div><div id="stats"></div></section><section id="quest" class="glass"><small id="questcategory">J · Сюжет и задания</small><h3 id="questtitle"></h3><p id="questtext"></p><button id="journalbutton" onclick="openModal('journal')">Открыть журнал →</button></section></div>
