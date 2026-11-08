@@ -95,6 +95,8 @@ body[data-play=true] #menu-ad{display:none!important}
 
 
 .menu-about-link{display:block;width:fit-content;margin:22px auto 4px;padding:10px 18px;color:#dfce97;font-size:13px;text-decoration:none;border:1px solid #a3af7855;border-radius:4px;min-height:44px;touch-action:manipulation}.menu-about-link:hover{background:#344d32;border-color:#dfce97}.menu-about-link:focus-visible{outline:2px solid #dfce97;outline-offset:4px}
+
+#site-info-links{display:flex;justify-content:center;flex-wrap:wrap;gap:4px 16px;margin:6px 0 4px}#site-info-links a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;max-width:100%;padding:6px 4px;color:#bdcba8;font-size:12px;text-underline-offset:4px;overflow-wrap:anywhere}#site-info-links a:hover{color:#dfce97}#site-info-links a:focus-visible{outline:2px solid #dfce97;outline-offset:3px}
 </style></head><body>
 <canvas id="c" aria-label="Игровой мир"></canvas>
 <div class="left-panels"><section id="hud" class="glass"><small>Зона отчуждения / 04</small><h1>МЁРТВАЯ ЗОНА</h1><div id="zone"></div><div class="bar xp"><i id="xp"></i></div><div id="healthtext"></div><div class="bar"><i id="health"></i></div><div id="needs"><div><span id="hungerlabel"></span><div class="bar"><i id="hungerbar"></i></div></div><div><span id="thirstlabel"></span><div class="bar"><i id="thirstbar"></i></div></div></div><div id="stats"></div></section><section id="quest" class="glass"><small id="questcategory">J · Сюжет и задания</small><h3 id="questtitle"></h3><p id="questtext"></p><button id="journalbutton" onclick="openModal('journal')">Открыть журнал →</button></section></div>
@@ -1123,6 +1125,12 @@ function renderMainMenu(){
   aboutLink.href = './about.html';
   aboutLink.textContent = ({ru:'Об игре',en:'About the game',uz:'O‘yin haqida',es:'Sobre el juego',de:'Über das Spiel',tr:'Oyun hakkında'})[language] || 'About the game';
   document.querySelector('#overlay .mode-panel').appendChild(aboutLink);
+  const infoLinks = document.createElement('nav');
+  infoLinks.id = 'site-info-links';
+  infoLinks.setAttribute('aria-label','Информация / Information');
+  const infoLabels = ({ru:['Конфиденциальность','Обратная связь'],en:['Privacy','Contact'],uz:['Maxfiylik','Aloqa'],es:['Privacidad','Contacto'],de:['Datenschutz','Kontakt'],tr:['Gizlilik','İletişim']})[language] || ['Privacy','Contact'];
+  ['privacy.html','contact.html'].forEach((file,i)=>{const link=document.createElement('a');link.href='./'+file;link.textContent=infoLabels[i];infoLinks.appendChild(link)});
+  document.querySelector('#overlay .mode-panel').appendChild(infoLinks);
   mountMenuAd();
   $('#mode-story').onclick=()=>selectMode('story');$('#mode-sandbox').onclick=()=>selectMode('sandbox');$('#language-select').onchange=e=>setLanguage(e.target.value);$('#start').onclick=beginAdventure;if(savedState)$('#newgame').onclick=resetCurrentMode;localizeUI();
 }
