@@ -1,0 +1,17 @@
+{
+  "id": "./",
+  "name": "Dead Zone · NV-7",
+  "short_name": "Dead Zone",
+  "description": "A 2D zombie survival sandbox RPG with a story campaign, base building and local saves.",
+  "lang": "ru",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#102c21",
+  "theme_color": "#102c21",
+  "icons": [
+    {"src":"./icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"./icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}
