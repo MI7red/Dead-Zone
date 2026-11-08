@@ -93,6 +93,8 @@ body[data-play=true] #menu-ad{display:none!important}
 @media(max-width:800px){#overlay .main-menu{grid-template-columns:minmax(0,1fr)}#menu-ad{padding:26px 12px}.main-menu .menu-top{flex-wrap:wrap}.main-menu .mode-card>span{min-width:0}.main-menu .menu-hero h1{font-size:clamp(28px,9vw,40px);overflow-wrap:anywhere}}
 @media(max-height:500px){#overlay .main-menu{max-height:90vh;max-height:90dvh}}
 
+
+.menu-about-link{display:block;width:fit-content;margin:22px auto 4px;padding:10px 18px;color:#dfce97;font-size:13px;text-decoration:none;border:1px solid #a3af7855;border-radius:4px;min-height:44px;touch-action:manipulation}.menu-about-link:hover{background:#344d32;border-color:#dfce97}.menu-about-link:focus-visible{outline:2px solid #dfce97;outline-offset:4px}
 </style></head><body>
 <canvas id="c" aria-label="Игровой мир"></canvas>
 <div class="left-panels"><section id="hud" class="glass"><small>Зона отчуждения / 04</small><h1>МЁРТВАЯ ЗОНА</h1><div id="zone"></div><div class="bar xp"><i id="xp"></i></div><div id="healthtext"></div><div class="bar"><i id="health"></i></div><div id="needs"><div><span id="hungerlabel"></span><div class="bar"><i id="hungerbar"></i></div></div><div><span id="thirstlabel"></span><div class="bar"><i id="thirstbar"></i></div></div></div><div id="stats"></div></section><section id="quest" class="glass"><small id="questcategory">J · Сюжет и задания</small><h3 id="questtitle"></h3><p id="questtext"></p><button id="journalbutton" onclick="openModal('journal')">Открыть журнал →</button></section></div>
@@ -1115,6 +1117,12 @@ function mountMenuAd(){
 function renderMainMenu(){
   if(menuAdElement) menuAdElement.remove();
   $('#overlay').innerHTML='<div class="main-menu"><section class="menu-hero"><span class="eyebrow">NV-7 / '+tr('survivalRPG')+'</span><h1>'+tr('gameTitle')+'</h1><p class="hero-lead">'+tr('heroText')+'</p><div class="hero-tags"><span>06 '+tr('regions')+'</span><span>◈ '+tr('armor')+'</span><span>⌂ '+tr('base')+'</span></div><div class="hero-art">'+menuScenerySVG()+'</div><small class="hero-caption">'+tr('heroCaption')+'</small></section><section class="mode-panel"><div class="menu-top"><span class="eyebrow">'+tr('chooseMode')+'</span>'+languageSelectHTML('language-select')+'</div><button class="mode-card '+(gameMode==='story'?'selected':'')+'" id="mode-story" aria-pressed="'+(gameMode==='story')+'"><span class="mode-number">01</span><span><strong>'+tr('story')+'</strong><small>'+tr('storyDescription')+'</small></span><span class="mode-arrow">↗</span></button><button class="mode-card '+(gameMode==='sandbox'?'selected':'')+'" id="mode-sandbox" aria-pressed="'+(gameMode==='sandbox')+'"><span class="mode-number">02</span><span><strong>'+tr('sandbox')+'</strong><small>'+tr('sandboxDescription')+'</small></span><span class="mode-arrow">↗</span></button><p id="saveinfo" class="summary">'+(savedState?tr('saveReady')+' · '+tr('level')+' '+p.level+' · '+tr('day')+' '+(Math.floor(clock/CYCLE)+1):tr('newWorld'))+'</p><button class="primary start-adventure" id="start">'+tr(savedState?'continue':'start')+' →</button>'+(savedState?'<button class="reset-world" id="newgame">'+tr('newModeWorld')+'</button>':'')+'<p class="menu-save-note">'+tr('separateSaves')+'</p><div class="menu-controls">WASD · '+tr('move')+' &nbsp; I · '+tr('bag')+'<br>K · '+tr('armor')+' &nbsp; O · '+tr('settings')+'</div></section></div>';
+  const aboutLink = document.createElement('a');
+  aboutLink.id = 'about-game-link';
+  aboutLink.className = 'menu-about-link';
+  aboutLink.href = './about.html';
+  aboutLink.textContent = ({ru:'Об игре',en:'About the game',uz:'O‘yin haqida',es:'Sobre el juego',de:'Über das Spiel',tr:'Oyun hakkında'})[language] || 'About the game';
+  document.querySelector('#overlay .mode-panel').appendChild(aboutLink);
   mountMenuAd();
   $('#mode-story').onclick=()=>selectMode('story');$('#mode-sandbox').onclick=()=>selectMode('sandbox');$('#language-select').onchange=e=>setLanguage(e.target.value);$('#start').onclick=beginAdventure;if(savedState)$('#newgame').onclick=resetCurrentMode;localizeUI();
 }
